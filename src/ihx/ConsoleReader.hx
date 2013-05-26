@@ -78,31 +78,26 @@ class ConsoleReader
             // Lib.println("\ngot: " + code +"\n");
             if( code == codeSet.arrow ) // arrow keys
             {
-                if( neko.Sys.systemName() != "Windows" )
+                if( Sys.systemName() != "Windows" )
                     Sys.getChar(false); // burn extra char
                 code = Sys.getChar(false);
-                switch( code )
-                {
-                case codeSet.up:    { clear(cmd); cmd.set(history.prev()); }
-                case codeSet.down:  { clear(cmd); cmd.set(history.next()); }
-                case codeSet.right: cmd.cursorForward();
-                case codeSet.left:  cmd.cursorBack();
-                }
+                
+                if ( code == codeSet.up ) { clear(cmd); cmd.set(history.prev()); }
+                else if ( code == codeSet.down ) { clear(cmd); cmd.set(history.next()); }
+                else if ( code == codeSet.right ) cmd.cursorForward();
+                else if ( code == codeSet.left ) cmd.cursorBack();
             }
             else
             {
-                switch( code )
-                {
-                case codeSet.ctrlc: { Lib.println(""); neko.Sys.exit(1); }
-                case codeSet.enter: { Lib.println(""); history.add(cmd.toString()); return cmd.toString(); }
-                case codeSet.ctrld: cmd.del(); // del shares code with tilde?
-                case codeSet.ctrla: cmd.home();
-                case codeSet.ctrle: cmd.end();
-                case codeSet.ctrlf: cmd.cursorForward();
-                case codeSet.ctrlb: cmd.cursorBack();
-                case codeSet.backspace: cmd.backspace();
-                default: if( code>=32 && code<=126 ) cmd.addChar(String.fromCharCode(code));
-                }
+                if ( code == codeSet.ctrlc ) { Lib.println(""); Sys.exit(1); }
+                else if ( code == codeSet.enter ) { Lib.println(""); history.add(cmd.toString()); return cmd.toString(); }
+                else if ( code == codeSet.ctrld ) cmd.del(); // del shares code with tilde?
+                else if ( code == codeSet.ctrla ) cmd.home();
+                else if ( code == codeSet.ctrle ) cmd.end();
+                else if ( code == codeSet.ctrlf ) cmd.cursorForward();
+                else if ( code == codeSet.ctrlb ) cmd.cursorBack();
+                else if ( code == codeSet.backspace ) cmd.backspace();
+                else if ( code>=32 && code<=126 ) cmd.addChar(String.fromCharCode(code));
             }
             Lib.print(cmd.toConsole());
         }

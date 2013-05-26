@@ -22,6 +22,8 @@ using StringTools;
 import sys.FileSystem;
 import neko.Lib;
 import ihx.program.Program;
+import haxe.ds.StringMap;
+using Lambda;
 
 enum CmdError
 {
@@ -34,8 +36,8 @@ class CmdProcessor
     /** accumulating command fragments */
     private var sb :StringBuf;
   
-    /** hash connecting interpreter commands to the functions that implement them */
-    private var commands :Hash<Dynamic>;
+    /** StringMap connecting interpreter commands to the functions that implement them */
+    private var commands :StringMap<Dynamic>;
 
     /** runs haxe compiler and neko vm */
     private var nekoEval :NekoEval;
@@ -51,7 +53,7 @@ class CmdProcessor
         nekoEval = new NekoEval();
         program = new Program(nekoEval.tmpSuffix);
         sb = new StringBuf();
-        commands = new Hash<Void->String>();
+        commands = new StringMap<Void->String>();
         commands.set("dir", listVars);
         commands.set("addpath", addPath);
         commands.set("rmpath", rmPath);
@@ -62,8 +64,8 @@ class CmdProcessor
         commands.set("clear", clearVars);
         commands.set("print", printProgram);
         commands.set("help", printHelp);
-        commands.set("exit", callback(neko.Sys.exit,0));
-        commands.set("quit", callback(neko.Sys.exit,0));
+        commands.set("exit", Sys.exit.bind(0));
+        commands.set("quit", Sys.exit.bind(0));
     }
 
     /**

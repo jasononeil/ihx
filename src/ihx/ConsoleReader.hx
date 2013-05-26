@@ -58,7 +58,7 @@ class ConsoleReader
         code = 0;
         cmd = new PartialCommand();
         history = new History();
-        if( neko.Sys.systemName() == "Windows" )
+        if( Sys.systemName() == "Windows" )
             codeSet = {arrow: 224, up: 72, down: 80, right: 77, left: 75, 
                        backspace: 8, ctrlc: 3, enter: 13,
                        ctrla: 1, ctrle: 5, ctrlb: 2, ctrlf: 6, ctrld: 4 };

@@ -100,10 +100,10 @@ class TestBuiltins extends haxe.unit.TestCase
         assertEquals("7", ret);
     }
 
-    public function testHash()
+    public function testStringMap()
     {
         var proc = new CmdProcessor();
-        var ret = proc.process("var a=new Hash()");
+        var ret = proc.process("var a=new StringMap()");
         assertEquals("{}", ret);
 
         ret = proc.process("a.set('one', 1);");

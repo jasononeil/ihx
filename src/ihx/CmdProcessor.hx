@@ -135,7 +135,8 @@ class CmdProcessor
         if( ! FileSystem.exists(name) )
             return "path not found: " + name;
         var path = FileSystem.fullPath(name);
-        nekoEval.classpath.add(path);
+        if ( !nekoEval.classpath.has(path) )
+            nekoEval.classpath.push(path);
         return "added: " + path;
     }
 
@@ -150,11 +151,14 @@ class CmdProcessor
         if( ! FileSystem.exists(name) )
             return "path not found: " + name;
         var path = FileSystem.fullPath(name);
-        var count = nekoEval.classpath.remove( function(ii) return ii==path );
-        return if( count > 0 )
-            "removed: " + path;
-        else
-            "path not found: " + path;
+        return 
+            if ( nekoEval.classpath.has(path) )
+            {
+                do { nekoEval.classpath.remove(path); } while ( nekoEval.classpath.has(path) );
+                'removed $path';
+            }
+            else
+               'path not found: $path';
     }
 
     /**
@@ -175,8 +179,13 @@ class CmdProcessor
         var name = cmdStr.split(" ")[1];
         if( name==null || name.length==0 )
             return "syntax error";
-        nekoEval.libs.add(name);
-        return "added: " + name;
+        return 
+            if ( !nekoEval.libs.has(name) )
+            {
+                nekoEval.libs.push(name);
+                'added: $name';
+            }
+            else 'Library $name was already added';
     }
 
     /**
@@ -187,7 +196,8 @@ class CmdProcessor
         var name = cmdStr.split(" ")[1];
         if( name == null || name.length==0 )
             return "syntax error";
-        nekoEval.libs.remove(function(ii) return ii==name);
+        while (nekoEval.libs.has(name))
+            nekoEval.libs.remove(name);
         return "removed: " + name;
     }
 

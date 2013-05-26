@@ -28,8 +28,8 @@ import ihx.program.Program;
 
 class NekoEval
 {
-    public var classpath(default,null) :Set<String>;
-    public var libs(default,null) :Set<String>;
+    public var classpath(default,null) :Array<String>;
+    public var libs(default,null) :Array<String>;
     public var tmpSuffix(default,null) :String;
     private var errRegex :EReg;
     private var tmpDir :String;
@@ -39,8 +39,8 @@ class NekoEval
 
     public function new()
     {
-        classpath = new Set<String>();
-        libs = new Set<String>();
+        classpath = new Array<String>();
+        libs = new Array<String>();
         errRegex = ~/.*IhxProgram_[0-9]*.hx:.* characters [0-9\-]+ : (.*)/;
         tmpDir = (Sys.systemName()=="Windows") ? Sys.getEnv("TEMP") : "/tmp";
         tmpSuffix = StringTools.lpad(Std.string(Std.random(9999)), "0", 4);
